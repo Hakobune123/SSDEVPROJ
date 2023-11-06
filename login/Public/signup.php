@@ -11,37 +11,31 @@
             $Error = " Please enter a valid email address";
         }
 
-        $password = e$_POST['password'];
+        $PermissionsLvl = 0;
+        $user_name = esc($_POST['user_name']); 
+
+        $url_address = a(60);
+     //   $url_address = "FixmeLater";
+
+        $password = esc($_POST['password']);
 
 
-        $arr['password'] = $password
-        $arr['email'] = $email
-
-        $query = "select * from users where email = :email && password = password limit 1";
-        $stm = $connection -> prepare($query);
-        $check = $stm->execute($arr);
-        
-
-        if($check){
-
-            $data = $stm->fetchAll(PDO::FETCH_OBJ);
-                if(is_array($data)){
+        if ($Error == "") {
+            $query = "INSERT INTO users (url_address, user_name, password, email, PermissionsLvl) VALUES (:url_address, :user_name, :password, :email, :PermissionsLvl)";
     
-                    $data = $data[0];
-                    $_SESISON['url_address'] = $data
-                    header("location: index.php");
-                    die;
-                }           
+            $stmt = $connection->prepare($query);
+            
+            $stmt->bindParam(':url_address', $url_address);
+            $stmt->bindParam(':user_name', $user_name);
+            $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':PermissionsLvl', $PermissionsLvl);
+            echo $query;
+            $stmt->execute();
+    
+        }
 
-         }
-
-
-
-
-
-
-
-    }
+}
 
 ?>
 
@@ -49,7 +43,7 @@
 <! DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
+<title></title>
 </head>
 <body>
 
@@ -67,11 +61,12 @@
 
 
 
-    <div>Login</div>
+    <div>Signup</div>
     <input type="varchar" name="user_name" required><br><br>
+    <input type="email" name="email" required><br><br>
     <input type="password" name="password" required><br><br>
 
-    <input type= "submit" value= "Login">
+    <input type= "submit" value= "signup">
 </form>
 
 </body>
