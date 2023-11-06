@@ -11,17 +11,35 @@
             $Error = " Please enter a valid email address";
         }
 
-        $date = date("Y-m-d H:i:s");
-        $user_name = $_POST['user_name']; 
+        $password = e$_POST['password'];
 
-        $url_address = a(60);
-        $password = $_POST['password'];
 
-        $query = "insert into users (url_address, user_name, password, email, date) values ('$url_address','$user_name', '$password', '$email', '$date')";
+        $arr['password'] = $password
+        $arr['email'] = $email
 
-        echo  $query;
+        $query = "select * from users where email = :email && password = password limit 1";
+        $stm = $connection -> prepare($query);
+        $check = $stm->execute($arr);
+        
 
-        mysqli_query($connection, $query); 
+        if($check){
+
+            $data = $stm->fetchAll(PDO::FETCH_OBJ);
+                if(is_array($data)){
+    
+                    $data = $data[0];
+                    $_SESISON['url_address'] = $data
+                    header("location: index.php");
+                    die;
+                }           
+
+         }
+
+
+
+
+
+
 
     }
 
@@ -31,7 +49,7 @@
 <! DOCTYPE html>
 <html>
 <head>
-<title></title>
+<title>Login</title>
 </head>
 <body>
 
@@ -49,12 +67,11 @@
 
 
 
-    <div>Signup</div>
+    <div>Login</div>
     <input type="varchar" name="user_name" required><br><br>
-    <input type="email" name="email" required><br><br>
     <input type="password" name="password" required><br><br>
 
-    <input type= "submit" value= "signup">
+    <input type= "submit" value= "Login">
 </form>
 
 </body>
