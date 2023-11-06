@@ -10,7 +10,7 @@ function a($length){
 
     for ($i = 0; $i < $length; $i++) {
 
-        $random = rand(0,61);
+        $random = rand(0,31); //61
 
         $randomString .= $array[($random)];
     }
@@ -18,5 +18,9 @@ function a($length){
     return $randomString;
 }
 
+
+function esc($word){
+    return addslashes($word);
+}
 
 
